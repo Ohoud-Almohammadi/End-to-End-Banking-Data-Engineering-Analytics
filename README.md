@@ -336,31 +336,6 @@ The following techniques were used to improve analytical performance:
 
 ---
 
-## 📁 Repository Structure
-
-```text
-banking-data-engineering-analytics/
-│
-├── notebooks/
-│   ├── bronze/
-│   ├── silver/
-│   └── gold/
-│
-├── pipelines/
-│   └── azure-data-factory/
-│
-├── powerbi/
-│   └── banking-dashboard.pbix
-│
-├── images/
-│   ├── architecture/
-│   ├── data-model/
-│   └── dashboards/
-│
-└── README.md
-```
-
----
 
 ## 💡 Key Learnings
 
