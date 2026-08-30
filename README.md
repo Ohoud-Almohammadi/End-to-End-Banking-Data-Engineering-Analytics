@@ -33,42 +33,88 @@ The project demonstrates practical implementation of cloud-based data engineerin
 ## 🏗️ Solution Architecture
 
 ```text
-Source Data
-    │
-    ▼
-Azure Data Lake Storage Gen2
-(Bulk / Raw Files)
-    │
-    ▼
-Azure Data Factory
-(Data Ingestion)
-    │
-    ▼
-Bronze Layer
-Raw Data
-    │
-    ▼
-Silver Layer
-Cleaned & Standardized Data
-    │
-    ▼
-Gold Layer
-Dimensional Model
-    │
-    ├── fact_transactions
-    ├── dim_users
-    ├── dim_cards
-    ├── dim_date
-    └── dim_mcc
-    │
-    ▼
-Aggregation Layer
-agg_transaction_daily
-    │
-    ▼
-Power BI
-Composite Model & Dashboards
+                     SOURCE DATA
+                    CSV / JSON Files
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │ Azure Data Factory  │
+                │   Ingestion         │
+                └──────────┬──────────┘
+                           │
+                           ▼
+        ╔══════════════════════════════════════╗
+        ║        ADLS Gen2 — BRONZE            ║
+        ║                                      ║
+        ║      Raw / Ingested Data             ║
+        ╚══════════════════╤═══════════════════╝
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Azure Databricks  │
+                │      PySpark        │
+                │ Cleaning & Transform│
+                └──────────┬──────────┘
+                           │
+                           ▼
+        ╔══════════════════════════════════════╗
+        ║        ADLS Gen2 — SILVER            ║
+        ║                                      ║
+        ║   Cleaned & Standardized Data        ║
+        ╚══════════════════╤═══════════════════╝
+                           │
+                           ▼
+                ┌─────────────────────┐
+                │   Azure Databricks  │
+                │      PySpark        │
+                │ Modeling & Transform│
+                └──────────┬──────────┘
+                           │
+                           ▼
+        ╔══════════════════════════════════════╗
+        ║         ADLS Gen2 — GOLD             ║
+        ║                                      ║
+        ║   Analytics-Ready Data (Persisted)   ║
+        ║                                      ║
+        ║ fact_transactions                    ║
+        ║ dim_users                            ║
+        ║ dim_cards                            ║
+        ║ dim_date                             ║
+        ║ dim_mcc                              ║
+        ║ agg_transaction_daily                ║
+        ╚══════════════════╤═══════════════════╝
+                           │
+                           │  Load / Serve
+                           ▼
+                ┌─────────────────────┐
+                │  Databricks SQL     │
+                │      Warehouse      │
+                │   Serving Layer     │
+                └──────────┬──────────┘
+                           │
+                           │ DirectQuery
+                           ▼
+                ┌─────────────────────┐
+                │      Power BI       │
+                │   Composite Model   │
+                │                     │
+                │ Import + DirectQuery│
+                │    + Aggregations   │
+                └──────────┬──────────┘
+                           │
+                           ▼
+                    ┌──────────────┐
+                    │  Dashboards  │
+                    └──────────────┘
 ```
+> **Architecture Note:**
+> Each Medallion layer is physically persisted in **Azure Data Lake Storage Gen2** to maintain a structured and reusable data lifecycle across the pipeline.
+>
+> **Bronze** stores the raw ingested data, while **Silver** contains cleaned and standardized datasets. **Gold** contains analytics-ready dimensional and aggregated datasets.
+>
+> The Gold layer is then exposed through a **Databricks SQL Warehouse**, which acts as the serving and query layer for **Power BI**. Power BI connects to the SQL Warehouse using a **Composite Model** that combines DirectQuery, Import, and Aggregations for analytical performance.
+>
+> This architecture separates **data storage and processing from the BI serving layer**, while preserving each Medallion layer for traceability, reusability, and downstream processing.
 
 ---
 
