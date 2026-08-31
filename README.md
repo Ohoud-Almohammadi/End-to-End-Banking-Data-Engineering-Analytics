@@ -14,6 +14,8 @@ The solution follows a modern **Lakehouse Architecture**, transforming raw banki
 
 The project demonstrates practical implementation of cloud-based data engineering concepts, including data pipelines, Medallion Architecture, Delta Lake, dimensional modeling, data aggregation, and Power BI Composite Models.
 
+![Medallion Architecture](02_Architecture/Medallion%20Architecture.jpg) 
+
 ---
 
 ## 🎯 Project Objectives
@@ -118,37 +120,27 @@ The project demonstrates practical implementation of cloud-based data engineerin
 
 ---
 
-## 🛠️ Technologies Used
 
-| Technology                   | Purpose                                      |
-| ---------------------------- | -------------------------------------------- |
-| Azure Data Factory           | Data ingestion and pipeline orchestration    |
-| Azure Data Lake Storage Gen2 | Cloud data lake storage                      |
-| Azure Databricks             | Data processing and transformation           |
-| PySpark                      | Large-scale data transformation              |
-| Delta Lake                   | Reliable and optimized data storage          |
-| Power BI                     | Data visualization and business intelligence |
-| DAX                          | KPI and analytical measure development       |
-| DAX Studio                   | Query performance and aggregation validation |
-
----
-
-## 🗂️ Data Architecture
+## 🗂️ Project Execution & Steps: 
 
 The project follows the **Medallion Architecture**.
 
-### 🥉 Bronze Layer — Raw Data
+### 1️⃣ Data Ingestion & Staging (Azure Data Factory)
 
-The Bronze layer stores the original source data with minimal transformation.
+* Landing / Staging Area:** Raw source files were initially uploaded in bulk to a staging container in Azure Data Lake Storage (ADLS Gen2).<br>
+![Azure Staging ADLS](03_Screenshots/Staging%20ADLS.png)
 
-Source files include:
+* Automated Orchestration:** The Azure Data Factory (ADF) pipeline orchestrates the ingestion process, moving and organizing the data into the primary **Bronze Layer** for downstream PySpark processing.<br> <br>
+![Azure Data Factory Pipeline](03_Screenshots/adf-ingestion-pipeline.png)
 
-* `transactions_data.csv`
-* `cards_data.csv`
-* `users_data.csv`
-* `mcc_codes.json`
 
-The objective of this layer is to preserve the original source data and provide a reliable foundation for downstream processing.
+
+### 2️⃣ Data Transformation & Medallion Architecture (Databricks & PySpark)
+The core data processing pipeline is built on **Azure Databricks** using **PySpark** and **Delta Lake**, following the **Medallion Architecture** pattern to progressively clean, structure, and aggregate transaction data.
+
+#### 🥉 Bronze Layer — Raw Data Ingestion
+* **Description:** Iterates through raw source files (**CSV** and multi-line **JSON**) stored in the ADLS Bronze container. It dynamically reads the files, infers their schemas, and persists them as **Delta Tables** within the bronze schema using PySpark.
+* 🔗 **Notebook Source Code:** [Browse 01_Bronze Folder](01_Data_Engineering/01_Bronze/NB_Bronze_Ingestion.ipynb)
 
 ---
 
@@ -321,46 +313,17 @@ The project includes several analytical KPIs, including:
 
 ---
 
-## 🚀 Performance Optimization
+## 🛠️ Technologies Used
 
-The following techniques were used to improve analytical performance:
-
-* Medallion Architecture
-* Delta Lake storage
-* Dimensional data modeling
-* Aggregation tables
-* Power BI Composite Model
-* Import and DirectQuery storage modes
-* Dual storage mode for shared dimensions
-* Query validation using DAX Studio
-
----
+| Technology                   | Purpose                                      |
+| ---------------------------- | -------------------------------------------- |
+| Azure Data Factory           | Data ingestion and pipeline orchestration    |
+| Azure Data Lake Storage Gen2 | Cloud data lake storage                      |
+| Azure Databricks             | Data processing and transformation           |
+| PySpark                      | Large-scale data transformation              |
+| Delta Lake                   | Reliable and optimized data storage          |
+| Power BI                     | Data visualization and business intelligence |
+| DAX                          | KPI and analytical measure development       |
+| DAX Studio                   | Query performance and aggregation validation |
 
 
-## 💡 Key Learnings
-
-This project provided hands-on experience with:
-
-* Building end-to-end cloud data pipelines
-* Designing a Medallion Architecture
-* Processing large-scale transaction data using PySpark
-* Implementing dimensional data models
-* Designing aggregation tables
-* Optimizing analytical queries
-* Building Power BI Composite Models
-* Validating aggregation behavior using DAX Studio
-* Developing business-focused analytical dashboards
-
----
-
-## 🔮 Future Improvements
-
-Potential future improvements include:
-
-* Incremental data loading
-* Automated data quality checks
-* Pipeline monitoring and alerting
-* CI/CD for Databricks notebooks and Azure Data Factory pipelines
-* Row-Level Security in Power BI
-* Advanced customer segmentation
-* Predictive analytics
