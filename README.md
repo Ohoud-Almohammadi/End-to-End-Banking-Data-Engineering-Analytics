@@ -127,79 +127,45 @@ The project follows the **Medallion Architecture**.
 
 ### 1️⃣ Data Ingestion & Staging (Azure Data Factory)
 
-* Landing / Staging Area:** Raw source files were initially uploaded in bulk to a staging container in Azure Data Lake Storage (ADLS Gen2).<br>
+**Landing / Staging Area:** Raw source files were initially uploaded in bulk to a staging container in Azure Data Lake Storage (ADLS Gen2).
+
 ![Azure Staging ADLS](03_Screenshots/Staging%20ADLS.png)
 
-* Automated Orchestration:** The Azure Data Factory (ADF) pipeline orchestrates the ingestion process, moving and organizing the data into the primary **Bronze Layer** for downstream PySpark processing.<br> <br>
+**Automated Orchestration:** The Azure Data Factory (ADF) pipeline orchestrates the ingestion process, moving and organizing the data into the primary **Bronze Layer** for downstream PySpark processing.
+
 ![Azure Data Factory Pipeline](03_Screenshots/adf-ingestion-pipeline.png)
 
+---
 
-
-### 2️⃣ Data Transformation & Medallion Architecture (Databricks & PySpark)
+### 2️⃣ Data Transformation & Medallion Architecture (Databricks)
 The core data processing pipeline is built on **Azure Databricks** using **PySpark** and **Delta Lake**, following the **Medallion Architecture** pattern to progressively clean, structure, and aggregate transaction data.
 
 #### 🥉 Bronze Layer — Raw Data Ingestion
 * **Description:** Iterates through raw source files (**CSV** and multi-line **JSON**) stored in the ADLS Bronze container. It dynamically reads the files, infers their schemas, and persists them as **Delta Tables** within the bronze schema using PySpark.
+  
+![Bronze delta Tables](01_Data_Engineering/01_Bronze/bronze_delta_tables.png)
+
 * 🔗 **Notebook Source Code:** [Browse 01_Bronze Folder](01_Data_Engineering/01_Bronze/NB_Bronze_Ingestion.ipynb)
 
 ---
 
-### 🥈 Silver Layer — Cleaned & Standardized Data
 
-The Silver layer applies data cleaning, validation, and standardization.
-
-Key transformations include:
-
-* Handling invalid and inconsistent records.
-* Standardizing transaction data types.
-* Standardizing geographic information.
-* Separating merchant geography into:
-
-  * Merchant Country
-  * Merchant State
-  * Merchant City
-* Handling online transactions where geographic information is unavailable.
-* Preparing cleaned datasets for analytical modeling.
+#### 🥈 Silver Layer — Data Cleansing & Standardization
+* **Description:** Cleanses, standardizes, and validates the raw datasets. Key transformations include handling invalid values, standardizing date/time and currency data types, and splitting geographic information (Country, State, City) for both customers and merchants (including online transaction handling).
+  
+  ![Databricks Silver Processing](01_Data_Engineering/02_Silver/silver_delta_tables.png)
+  
+* 🔗 **Notebooks Source Code:** [Browse 02_Silver Folder](01_Data_Engineering/02_Silver)
 
 ---
 
-### 🥇 Gold Layer — Analytics-Ready Data
+#### 🥇 Gold Layer — Dimensional Modeling & Aggregation
+* **Description:** Builds the final analytical layer consisting of a **Star Schema** with Fact (`fact_transactions`) and Dimension tables (`dim_users`, `dim_cards`, `dim_mcc`, `dim_date`). It also generates a pre-aggregated daily summary table (`agg_transaction_daily`) to optimize analytical query execution in Power BI.
 
-The Gold layer contains the dimensional model used for reporting and analytics.
+![Databricks Gold Modeling](01_Data_Engineering/03_Gold/gold_delta_tables.png)
 
-### Fact Table
+* 🔗 **Notebook Source Code:** [Browse 03_Gold Folder](01_Data_Engineering/03_Gold)
 
-* `fact_transactions`
-
-### Dimension Tables
-
-* `dim_users`
-* `dim_cards`
-* `dim_date`
-* `dim_mcc`
-
-The model follows a dimensional approach optimized for analytical workloads.
-
----
-
-## 📊 Aggregation Layer
-
-An aggregation table was created to improve analytical query performance:
-
-```text
-agg_transaction_daily
-```
-
-The aggregation table includes:
-
-* Date
-* Merchant Category
-* Merchant Country
-* Transaction Type
-* Total Transaction Amount
-* Transaction Count
-
-This layer reduces the need to query the detailed transaction fact table for common analytical queries.
 
 ---
 
