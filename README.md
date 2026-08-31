@@ -262,4 +262,7 @@ To ensure query optimization, performance trace analysis was conducted using **D
 | DAX                          | KPI and analytical measure development       |
 | DAX Studio                   | Query performance and aggregation validation |
 
+---
+## 🔒 License & Usage Note
+This repository and its contents are published by **Ohoud Almohammadi** strictly for **viewing and demonstration purposes**. 
 
