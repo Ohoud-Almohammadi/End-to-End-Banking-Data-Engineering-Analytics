@@ -169,6 +169,14 @@ The core data processing pipeline is built on **Azure Databricks** using **PySpa
 
 ---
 
+### 3️⃣ Data Storage & Serving Architecture
+
+* **ADLS Gen2 Structure:** Data is persisted across physically isolated containers (`bronze`, `silver`, `gold`) representing each Medallion stage.
+![ADLS](03_Screenshots/ADLS%20Gen2%20Storage%20.png) 
+* **Serving Layer:** The **Gold Layer** tables are served via a **Databricks SQL Warehouse**, acting as the high-performance query engine for analytical workloads and Power BI reporting.
+
+![ADLS Storage Containers](03_Screenshots/adls-containers.png)
+
 ## ⚡ Power BI Composite Model
 
 The Power BI semantic model uses a combination of storage modes.
