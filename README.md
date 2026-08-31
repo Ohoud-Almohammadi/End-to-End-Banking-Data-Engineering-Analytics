@@ -172,103 +172,45 @@ The core data processing pipeline is built on **Azure Databricks** using **PySpa
 ### 3️⃣ Data Storage & Serving Architecture
 
 * **ADLS Gen2 Structure:** Data is persisted across physically isolated containers (`bronze`, `silver`, `gold`) representing each Medallion stage.
+  
 ![ADLS](03_Screenshots/ADLS%20Gen2%20Storage%20.png) 
+
 * **Serving Layer:** The **Gold Layer** tables are served via a **Databricks SQL Warehouse**, acting as the high-performance query engine for analytical workloads and Power BI reporting.
+  
+![EDW](03_Screenshots/sql%20DW.png)
 
-![ADLS Storage Containers](03_Screenshots/adls-containers.png)
-
-## ⚡ Power BI Composite Model
-
-The Power BI semantic model uses a combination of storage modes.
-
-| Table                   | Storage Mode |
-| ----------------------- | ------------ |
-| `fact_transactions`     | DirectQuery  |
-| `agg_transaction_daily` | Import       |
-| `dim_date`              | Dual         |
-| `dim_mcc`               | Dual         |
-| `dim_users`             | Dual         | 
-| `dim_cards`             | Dual         |
-
-Aggregations were configured to allow Power BI to automatically query the imported aggregation table when the query grain was compatible.
-
-The aggregation behavior was validated using **DAX Studio**.
 
 ---
 
-## 🧪 Aggregation Testing
+### 4️⃣ Power BI Data Model & Storage Modes
 
-The Composite Model was tested to validate that Power BI queries were routed to the aggregation table instead of the detailed transaction fact table when applicable.
+The semantic model in Power BI follows a **Star Schema** utilizing a **Composite Model** architecture:
+* **Fact Table (`fact_transactions`):** Set to **DirectQuery** to support real-time querying without storing raw transaction scale locally.
+* **Aggregation Table (`agg_transaction_daily`):** Set to **Import** mode for maximum analytical speed on summary metrics.
+* **Dimension Tables (`dim_users`, `dim_cards`, `dim_date`, `dim_mcc`):** Set to **Dual** mode to seamlessly integrate with both DirectQuery and Import storage modes.
 
-Successful tests included:
-
-* Monthly Transaction Performance
-* Merchant Category Performance
-
-The tests confirmed that Power BI successfully used:
-
-```text
-agg_transaction_daily
-```
-
-instead of:
-
-```text
-fact_transactions
-```
-
-for compatible analytical queries.
+![Power BI Model View](03_Screenshots/Composite%20Model.png)
 
 ---
 
-## 📈 Dashboards
+### 5️⃣ Aggregation Performance Validation (DAX Studio)
 
-The Power BI report includes three main analytical dashboards.
-
-### 1️⃣ Transaction Overview
-
-Provides an executive overview of transaction performance.
-
-Key areas include:
-
-* Total transaction volume
-* Total transaction value
-* Average transaction amount
-* Transaction trends
-* Transaction activity analysis
-* Key transaction performance indicators
+To ensure query optimization, performance trace analysis was conducted using **DAX Studio**. The tests confirmed that Power BI automatically hits the imported aggregation table (`agg_transaction_daily`) for summarized queries instead of querying the massive DirectQuery fact table, significantly reducing query response time.
 
 ---
 
-### 2️⃣ Customer & Card Analytics
+### 6️⃣ Interactive Dashboards
 
-Focuses on customer behavior and card performance.
+#### 📊 1. Transaction Overview
+![Transaction Overview Dashboard](03_Screenshots/dashboard-transactions.png)
 
-Key areas include:
+#### 👤 2. Customer & Card Analytics
+![Customer Analytics Dashboard](03_Screenshots/dashboard-customers.png)
 
-* Customer transaction behavior
-* Customer activity analysis
-* Customer segmentation
-* Credit score analysis
-* Card performance
-* Customer spending patterns
+#### 🏪 3. Merchant & Geographic Analytics
+![Merchant Analytics Dashboard](03_Screenshots/dashboard-merchants.png)
 
----
-
-### 3️⃣ Merchant & Geographic Analytics
-
-Analyzes merchant activity and geographic transaction performance.
-
-Key areas include:
-
-* Merchant activity
-* Merchant category performance
-* Geographic transaction analysis
-* Country-level performance
-* Online transaction activity
-* Merchant activity trends
-
----
+--- 
 
 ## 📊 Key KPIs
 
