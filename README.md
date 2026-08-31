@@ -201,31 +201,51 @@ To ensure query optimization, performance trace analysis was conducted using **D
 
 ### 6️⃣ Interactive Dashboards
 
-#### 📊 1. Transaction Overview
-![Transaction Overview Dashboard](03_Screenshots/dashboard-transactions.png)
+### 1. Transactions Overview
+![Transactions Overview](03_Screenshots/Dashboard1.png)
 
-#### 👤 2. Customer & Card Analytics
-![Customer Analytics Dashboard](03_Screenshots/dashboard-customers.png)
+**Key Insights:**
+* **Key Performance Indicators (KPIs):** Tracks overall volume including Total Transactions (**13M**), Total Transaction Value (**$571.84M**), Average Transaction Value (**$28.99**), and Average Daily Transactions (**3.71K**).
+* **Transaction Trend Over Time:** Line chart displaying annual transaction volume from 2010 to 2019, peaking at **1.40M** in 2017.
+* **Transaction Type Percentage:** Breakdown of entry methods led by **Swipe Transactions** (**52.36% / 7M**), followed by **Chip** (**35.93% / 5M**) and **Online** (**11.71% / 2M**).
+* **Transactions by Card Type:** Spending split showing **Debit Cards** driving the highest value (**$326M**), followed by **Credit Cards** (**$226M**) and **Prepaid Debit Cards** (**$20M**).
+* **Quarterly Transaction Value Trend:** Stacked bar chart analyzing seasonal revenue distribution across Q1–Q4 from 2010 through 2019.
 
-#### 🏪 3. Merchant & Geographic Analytics
-![Merchant Analytics Dashboard](03_Screenshots/dashboard-merchants.png)
+---
 
---- 
+### 2. Customer Analytics
+![Customer Analytics](03_Screenshots/Dashboard2.png)
 
-## 📊 Key KPIs
+**Key Insights:**
+* **Customer Overview (KPIs):** Summarizes Total Customers (**2,000**), Active Customers (**1,219**), Active Customer Rate (**61%**), and Average Spend per Customer (**$469.10K**).
+* **Customer Behavior by Age Group:** Column chart breakdown by gender highlighting the **45–54 age group** as the highest spending cohort (**1.8M Female / 1.7M Male transactions**).
+* **Customer Spend by Income Band:** Bar chart showing customer spend concentration, heavily dominated by the **$25K–$49K** income bracket (**$306.98M**), followed by **$50K–$74K** (**$155.78M**).
+* **Customer Distribution by Credit Score:** Donut chart analyzing credit score tiers: **Good** (**47.42%**), **Very Good** (**25.96%**), **Fair** (**14.48%**), **Excellent** (**8.55%**), and **Poor** (**3.59%**).
+* **Client Debt-to-Spending Relationship:** Scatter plot mapping total customer debt against individual spending levels with a trendline analysis.
 
-The project includes several analytical KPIs, including:
+---
 
-* Total Transactions
-* Total Transaction Value
-* Average Transaction Amount
-* Active Customers
-* Average Spending per Customer
-* Customer Activity Rate
-* Total Merchants
-* Total Merchant Categories
-* Total Countries
-* Online Transaction Percentage
+### 3. Merchant & Geographic Analytics
+![Merchant & Geographic Analytics](03_Screenshots/Dashboard3.png)
+
+**Key Insights:**
+* **Merchant Metrics (KPIs):** Tracks Total Merchants (**75K**), Merchant Categories (**109**), Operating Countries (**148**), and Online Transaction Rate (**11.71%**).
+* **Merchant Activity Over Time:** Historical line chart tracking merchant count growth from 2010 (**27.8K**) to peak years 2017 (**29.7K**).
+* **Top Countries by Transaction Value:** Ranked bar chart led by the **United States** (**$479,603.32K**), followed by **Mexico** (**$889.58K**), **Italy** (**$456.05K**), **Canada** (**$358.29K**), and the **United Kingdom** (**$169.47K**).
+* **Top Merchant Categories:** Treemap showcasing top spend categories: **Money Transfer** (**$53.16M**), **Grocery Stores & Supermarkets** (**$40.97M**), **Wholesale Clubs** (**$37.7M**), and **Drug Stores & Pharmacies** (**$35.11M**).
+* **Transaction Distribution by Country:** Interactive Azure map showing global transaction density across geographic regions.
+
+---
+
+### 4. Cards Analytics (Decline Root Cause Analysis)
+![Cards Analytics](03_Screenshots/Dashboard4.png)
+
+**Key Insights:**
+* **Decline Metrics (KPIs):** Highlights Total Declined Transactions (**211,393**), Total Declined Amount (**$12.68M**), Transaction Failure Rate (**1.59%**), and Declined Amount Rate (**2.22%**).
+* **Failure Rate by Payment Channel:** Comparison showing **Online Transactions** suffer the highest failure rate (**2.28%**), compared to **Chip** (**1.51%**) and **Swipe** (**1.49%**).
+* **Error Type Distribution:** Identifies top decline causes, led by **Insufficient Balance** (**132K**), **Bad PIN** (**32K**), **Technical Glitch** (**27K**), **Bad Card Number** (**8K**), and **Bad Expiration** (**6K**).
+* **Declined Transactions by Card Type:** Donut chart showing declines concentrated in **Debit Cards** (**64.73%**), **Credit Cards** (**29.25%**), and **Prepaid Debit** (**6.03%**).
+* **Geographic Distribution of Declines:** Map pinpointing global decline density and hotspot areas.
 
 ---
 
