@@ -14,7 +14,7 @@ The solution follows a modern **Lakehouse Architecture**, transforming raw banki
 
 The project demonstrates practical implementation of cloud-based data engineering concepts, including data pipelines, Medallion Architecture, Delta Lake, dimensional modeling, data aggregation, and Power BI Composite Models.
 
-![Medallion Architecture](02_Architecture/Medallion%20Architecture.jpg) 
+![Medallion Architecture](02-Architecture/Architecture%20.jpg) 
 
 ---
 
